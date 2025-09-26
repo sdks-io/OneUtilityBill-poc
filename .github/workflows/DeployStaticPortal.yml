@@ -1,0 +1,77 @@
+# This is a basic workflow to help you get started with APIMatics API Portals
+
+name: Generate API Portal
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+ 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Generate-Portal:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: print branch
+        run: echo '${{ github.ref }}'
+      
+      # Zip the contents of the repository
+      - name: Zip build files for production deployment
+        if:  endsWith(github.ref, '/main')
+        run: zip -qq -r portal-input.zip . -x '/.git/*' '/.github/*'
+
+      # Call Apimatic Endpoint to generate Portal
+      - name: Generate Portal
+        id: generate-portal
+        run: | 
+          RESPONSE=`curl -s --write-out '%{http_code}\t%{content_type}' --request POST --url 'https://api.apimatic.io/portal' \
+            -H 'Authorization:X-Auth-Key ${{ secrets.API_KEY }}' -F 'file=@portal-input.zip' -OJ`;
+          
+          HTTP_CODE=$(echo $RESPONSE | cut -d " " -f 1);
+          CONTENT_TYPE=$(echo $RESPONSE | cut -d " " -f 2);
+          echo "HTTP_CODE=$HTTP_CODE" >> $GITHUB_OUTPUT;
+          echo "CONTENT_TYPE=$CONTENT_TYPE" >> $GITHUB_OUTPUT;
+   
+      # Unzip the generated Portal output
+      - name: Unzip Portal
+        if: ${{steps.generate-portal.outputs.HTTP_CODE == '200'}}
+        run: unzip -qq portal.zip -d portal
+    
+      # Upload Portal Artifact
+      - name: Upload Artifact
+        if: ${{steps.generate-portal.outputs.HTTP_CODE == '200' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal
+          path: portal
+
+      # Unzip error file if error code is 422 with a zip file
+      - name: Unzip error file
+        if: ${{steps.generate-portal.outputs.HTTP_CODE == '422' && steps.generate-portal.outputs.CONTENT_TYPE == 'application/zip'}}
+        run: unzip -qq error.zip -d error
+
+      # Upload error.zip if error code is 422 with a zip file
+      - name: Upload error.zip
+        if: ${{steps.generate-portal.outputs.HTTP_CODE == '422' && steps.generate-portal.outputs.CONTENT_TYPE == 'application/zip'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: error
+          path: error.zip
+        
+      # Publish updates to cloudflare
+      - name: Publish to Cloudflare Pages to main
+        if: steps.generate-portal.outputs.HTTP_CODE == '200'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy portal --branch=main --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}

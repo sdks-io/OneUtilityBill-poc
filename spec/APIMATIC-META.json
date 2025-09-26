@@ -1,0 +1,25 @@
+{
+  "ImportSettings": {
+    "AllowAdditionalEnumItems": true,
+    "AutoGenerateTestCases": false,
+    "ImportAdditionalHeader": false,
+    "ImportAdditionalTypeCombinatorModels": false,
+    "ImportTypeCombinatorsWithOnlyOneType": false
+  },
+  "CodeGenSettings": {
+    "ValidateRequiredParameters": true,
+    "AddSingleAuthDeprecatedCode": false,
+    "EnableGlobalUserAgent": true,
+    "UserAgent": "{language} SDK, Version: {version}, on OS {os-info}",
+    "EnableLogging": true,
+    "EnableModelKeywordArgsInRuby": true,
+    "SymbolizeHashKeysInRuby": true,
+    "ReturnCompleteHttpResponse": true,
+    "UserConfigurableRetries": true,
+    "UseEnumPrefix": false,
+    "ExtendedAdditionalPropertiesSupport": true,
+    "EnforceStandardizedCasing": true,
+    "ControllerPostfix": "Api",
+    "DoNotSplitWords": ["oauth"]
+  }
+}
