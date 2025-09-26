@@ -211,5 +211,15 @@
       "reportPath": "./apimatic-debug/apimatic-report.html",
       "importedApiDumpPath": "./apimatic-debug/imported-api-dump.json"
     }
+  },
+  "recipes": {
+    "workflows": [
+      {
+        "name": "Vacancy Creation Flow",
+        "permalink": "page:recipes/VacancyCreationFlow",
+        "functionName": "VacancyCreationFlow",
+        "scriptPath": "./static/scripts/recipes/VacancyCreationFlow.js"
+      }
+    ]
   }
 }
