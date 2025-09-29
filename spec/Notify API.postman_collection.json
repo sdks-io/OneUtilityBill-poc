@@ -20,11 +20,11 @@
     "/vacancies/{vacancyId}/liable-parties": {
       "get": {
         "tags": [
-          "liable-parties"
+          "liableParties"
         ],
         "summary": "vacancies.liable-parties.index",
         "description": "Returns a collection of liable-parties.\n\nFor details on the attributes of liable parties, consult the documentation for vacancies.liable-parties.show\n",
-        "operationId": "vacancies.liable-parties.index",
+        "operationId": "vacancies.LiableParties.index",
         "parameters": [
           {
             "name": "sort",
@@ -198,11 +198,11 @@
       },
       "post": {
         "tags": [
-          "liable-parties"
+          "liableParties"
         ],
         "summary": "vacancies.liable-parties.store",
         "description": "Create a new Liable Party resource.\n\nWe have two options for providing the phone number:\n - You can provide the full [E.164](https://en.wikipedia.org/wiki/E.164) number in the phone number field. A country code must still be provided, but if it is unknown, you can simply set it as 'GB'.\n - Alternatively, you can provide the country code in which the phone number is registered in, along with a phone number in nation format.\n    For example; To provide a UK mobile number, the `country_code` and `phone_number` could be set to the following:\n    ```\n        \"country_code\" : \"GB\",\n        \"phone_number\" : \"07700900500\"\n    ```\n    On Notify, we will transform the phone number into the E.164 format by default before it is stored into our database. The above example would become `+447700900500`\n\nWhen an address is provided, the property must be in either England, Scotland or Wales.\n\nAttribute             | Type      | Description\n--------------------- | --------- | ------------\n`move_type`**\\***     | string    | Either `move_out` or `move_in` - see liable-parties description\n`title`               | string    | The title of the liable party\n`first_name`**\\***    | string    | The first name of the liable party\n`last_name`**\\***     | string    | The last name of the liable party\n`country_code`**\\***  | string    | ISO-3166-1 alpha-2 formatted country code for the liable party's phone number or 'GB' if an E.164 phone number is provided and the country code is unknown\n`phone_number`**\\***  | string    | Either E.164 or nation formatted phone number of the liable party, if a country code is provided\n`email_address`**\\*** | string    | Valid email address, we will check that the domain is able to process emails\n`address_line_1`      | string    | Required for `move_out` liable parties. Not required for `move_in`\n`address_line_2`      | string    | Optional for `move_out` liable parties\n`address_line_3`      | string    | Optional for `move_out` liable parties\n`town`                | string    | Required for `move_out` liable parties. Not required for `move_in`\n`county`              | string    | Optional for `move_out` liable parties\n`postcode`            | string    | Required for `move_out` liable parties. Not required for `move_in`\n\n",
-        "operationId": "vacancies.liable-parties.store",
+        "operationId": "vacancies.LiableParties.store",
         "parameters": [
           {
             "name": "vacancyId",
@@ -361,11 +361,11 @@
     "/vacancies/{vacancyId}/liable-parties/{liablePartyId}": {
       "get": {
         "tags": [
-          "liable-parties"
+          "liableParties"
         ],
         "summary": "vacancies.liable-parties.show",
         "description": "Fetches a single liable party resource.\n\nAttribute        | Type      | Description\n-----------------| --------- | ------------\n`move_type`      | string    | Either `move_out` or `move_in` - see liable-parties description\n`title`          | string    | The title of the liable party, can be `null`\n`first_name`     | string    | The first name of the liable party\n`last_name`      | string    | The last name of the liable party\n`country_code`   | string    | ISO-3166-1 alpha-2 formatted country code for the liable party's phone number\n`phone_number`   | string    | E.164 formatted phone number of the liable party\n`email_address`  | string    | Valid email address that can accept emails\n`address_line_1` | string    | Always present for `move_out` liable parties. Can be `null` for `move_in`\n`address_line_2` | string    | Can be `null`\n`address_line_3` | string    | Can be `null`\n`town`           | string    | Always present for `move_out` liable parties. Can be `null` for `move_in`\n`county`         | string    | Can be `null`\n`postcode`       | string    | Always present for `move_out` liable parties. Can be `null` for `move_in`\n`created_at`     | string    | The datetime (UTC) when the liable party was added to Notify\n`updated_at`     | string    | The datetime (UTC) when the liable party was last updated\n",
-        "operationId": "vacancies.liable-parties.show",
+        "operationId": "vacancies.LiableParties.show",
         "parameters": [
           {
             "name": "vacancyId",
@@ -478,11 +478,11 @@
     "/vacancies/{vacancyId}/meter-readings": {
       "get": {
         "tags": [
-          "meter-readings"
+          "MeterReadings"
         ],
         "summary": "vacancies.meter-readings.index",
         "description": "Returns a collection of meter readings.\n\nFor details on the attributes of meter readings, consult the documentation for vacancies.meter-readings.show\n\n",
-        "operationId": "vacancies.meter-readings.index",
+        "operationId": "vacancies.MeterReadings.index",
         "parameters": [
           {
             "name": "page[size]",
@@ -626,11 +626,11 @@
       },
       "post": {
         "tags": [
-          "meter-readings"
+          "MeterReadings"
         ],
         "summary": "vacancies.meter-readings.store",
         "description": "Create a new meter reading resource.\n\nAttribute             | Type      | Description\n--------------------- | --------- | ------------\n`value`**\\***         | integer   | The value of the main meter dial. Between 5 and 10 digits\n`secondary_value`     | integer   | The value of the (optional) secondary meter dial. Between 5 and 10 digits.\n`period`**\\***        | string    | Either `opening` or `closing`.\n`utility_type`**\\***  | string    | The type of utility the meter reading is for. Either `electricity`, `gas` or `water`.\n",
-        "operationId": "vacancies.meter-readings.store",
+        "operationId": "vacancies.MeterReadings.store",
         "parameters": [
           {
             "name": "vacancyId",
@@ -753,11 +753,11 @@
     "/vacancies/{vacancyId}/meter-readings/{meterReadingId}": {
       "get": {
         "tags": [
-          "meter-readings"
+          "MeterReadings"
         ],
         "summary": "vacancies.meter-readings.show",
         "description": "Fetches a single meter reading resource.\n\nAttribute        | Type      | Description\n-----------------| --------- | ------------\n`value`          | integer   | The value of the main meter dial.\n`secondary_value`| integer   | The value of the (optional) secondary meter dial.\n`period`         | string    | Either `opening` or `closing`.\n`utility_type`   | string    | The type of utility the meter reading is for. Either `electricity`, `gas` or `water`.\n`created_at`     | string    | The datetime (UTC) when the meter reading was added to Notify\n`updated_at`     | string    | The datetime (UTC) when the meter reading was last updated\n\n",
-        "operationId": "vacancies.meter-readings.show",
+        "operationId": "vacancies.MeterReadings.show",
         "parameters": [
           {
             "name": "vacancyId",
@@ -1496,7 +1496,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/Response_2006"
+                      "$ref": "#/components/schemas/ServicesShowResponse"
                     },
                     {
                       "example": {
@@ -2472,11 +2472,11 @@
     "/vacancies/{vacancyId}/vacancy-metadata": {
       "get": {
         "tags": [
-          "vacancy-metadata"
+          "VacancyMetadata"
         ],
         "summary": "vacancies.vacancy-metadata.index",
         "description": "Returns a collection of metadata.",
-        "operationId": "vacancies.vacancy-metadata.index",
+        "operationId": "vacancies.VacancyMetadata.index",
         "parameters": [
           {
             "name": "sort",
@@ -2630,11 +2630,11 @@
       },
       "post": {
         "tags": [
-          "vacancy-metadata"
+          "VacancyMetadata"
         ],
         "summary": "vacancies.vacancy-metadata.store",
         "description": "Create a new Vacancy Metadata resource. `meta_key` must be unique for the given vacancy.\n\nAttribute              | Type      | Description\n-----------------------| --------- | ------------\n`meta_key`**\\***       | string    | A unique name for the metadata item.\n`meta_value`**\\***     | string    | The value of the metadata item.\n    ",
-        "operationId": "vacancies.vacancy-metadata.store",
+        "operationId": "vacancies.VacancyMetadata.store",
         "parameters": [
           {
             "name": "vacancyId",
@@ -2751,11 +2751,11 @@
     "/vacancies/{vacancyId}/vacancy-metadata/{vacancyMetadataId}": {
       "get": {
         "tags": [
-          "vacancy-metadata"
+          "VacancyMetadata"
         ],
         "summary": "vacancies.vacancy-metadata.show",
         "description": "Fetches a single Vacancy Metadata resource.\n\nAttribute               | Type      | Description\n------------------------| --------- | ------------\n`meta_key`              | string    | The unique name for the metadata item.\n`meta_value`            | string    | The value of the metadata item.\n`created_at`            | string    | The datetime (UTC) when the Vacancy Metadata was added to Notify\n`updated_at`            | string    | The datetime (UTC) when the Vacancy Metadata was last updated\n`deleted_at`            | string    | The datetime (UTC) when the Vacancy Metadata was soft deleted\n    ",
-        "operationId": "vacancies.vacancy-metadata.show",
+        "operationId": "vacancies.VacancyMetadata.show",
         "parameters": [
           {
             "name": "vacancyId",
@@ -2846,11 +2846,11 @@
       },
       "patch": {
         "tags": [
-          "vacancy-metadata"
+          "VacancyMetadata"
         ],
         "summary": "vacancies.vacancy-metadata.update",
         "description": "Update a Vacancy Metadata resource.\nAttribute              | Type      | Description\n-----------------------| --------- | ------------\n`meta_value`**\\***     | string    | The value of the metadata item.\n    ",
-        "operationId": "vacancies.vacancy-metadata.update",
+        "operationId": "vacancies.VacancyMetadata.update",
         "parameters": [
           {
             "name": "vacancyId",
@@ -4509,8 +4509,8 @@
           }
         }
       },
-      "Response_2006": {
-        "title": "Response_2006",
+      "ServicesShowResponse": {
+        "title": "ServicesShowResponse",
         "required": [
           "data"
         ],
